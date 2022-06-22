@@ -32,7 +32,7 @@ class Blockchain:
         check_proof =False
 
         while check_proof is False:
-            hash_val = hashlib.sha256(str(new_proof**2 - previous_proof**2).encode()).hexigest()
+            hash_val = hashlib.sha256(str(new_proof**2 - previous_proof**2).encode()).digest().hex()
             if hash_val[:4]=='0000':
                 check_proof=True
 
@@ -44,7 +44,7 @@ class Blockchain:
 
     def hash(self, block):
         encooded_block = json.dumps(block).encode()
-        return hashlib.sha256(encooded_block).hexigest()
+        return hashlib.sha256(encooded_block).digest().hex()
 
 
     def is_chain_valid(self,chain):
@@ -59,7 +59,7 @@ class Blockchain:
 
             previous_proof = previous_block['proof']
             proof = block['proof']
-            hash_val = hashlib.sha256(str(proof**2 - previous_proof**2).encode()).hexigest()
+            hash_val = hashlib.sha256(str(proof**2 - previous_proof**2).encode()).digest().hex()
             if hash_val[:4] != '0000':
                 return False
             previous_block = block
@@ -100,7 +100,7 @@ def is_valid():
 
     return jsonify(response), 200
 
-@app.route('/mine_block', methods=['post'])
+@app.route('/mine_block', methods=['POST'])
 
 def mine_block():
     values = request.get_json()
